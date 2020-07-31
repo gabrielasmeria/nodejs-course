@@ -1,44 +1,50 @@
-const fs = require("fs");
-const {Module} = require("module");
+const trim = value => value.split('+').join(' ');
 
 const requestHandler = (req, res) => {
-  const { url, method } = req;
+  const { url, method } = req
 
-  if (url === "/") {
-    res.write("<html>");
-    res.write("<head><title>My first page</title></head>");
-    res.write(
-      '<body><form action="/message" method="POST"><input type="text" name="message"><button type="submit">Send</button></form></body>'
-    );
-    res.write("</html>");
-    return res.end();
+  res.setHeader('ContentType', 'text/html')
+
+  if (url === '/' && method === "GET") {
+    res.write('<html>')
+    res.write('<head><title>My app</title></head>')
+    res.write('<body><h1>HELLLOOOOOOOOOOO</h1></body>')
+    res.write('<form action="/" method="post"><input type="text" name="message"></input><button type="submit">Click me!</button></form>')
+    res.write('</html>')
+    return res.end()
   }
 
-  if (url === "/message" && method === "POST") {
-    const body = [];
+  if (url === '/' && method === "POST") {
+    const message = []
 
-    req.on("data", (chunk) => {
-      console.log(chunk);
-      body.push(chunk);
-    });
+    req.on('data', chunk => {
+      message.push(chunk)
+    })
 
-    return req.on("end", () => {
-      const parsedBody = Buffer.concat(body).toString();
-      const message = parsedBody.split("=")[1];
-      fs.writeFile("message.txt", message, (err) => {
-        res.writeHead(302, { Location: "/" });
-        return res.end();
-      });
-    });
+    return req.on('end', () => {
+      const parsedData = Buffer.concat(message).toString()
+      const myMessage = parsedData.split("=")[1]
+
+      console.log(`This is my inputed message ${trim(myMessage)}`)
+      return res.end()
+    })
   }
 
-  res.setHeader("Content-Type", "text/html");
-  res.write("<html>");
-  res.write("<head><title>My first page</title></head>");
-  res.write("<body><h1>Hello from my NodeJS Server</h1></body>");
-  res.write("</html>");
-  res.end();
-};
+  if (url === '/users') {
+    const users = ['Gabriela', 'Andrei', 'Ioana', 'Malina', 'Daniel']
 
-exports.handler = requestHandler;
-exports.someText = 'Some hard coded text';
+    res.write('<html>')
+    res.write('<head><title>My users</title></head>')
+    res.write('<body><h1>These are my users</h1></body>')
+    res.write('<ul>')
+    for (index in users) {
+      res.write(`<li>${users[index]}</li>`)
+    }
+    res.write('</ul>')
+    res.write('</html>')
+
+    return res.end()
+  }
+}
+
+module.exports = requestHandler
