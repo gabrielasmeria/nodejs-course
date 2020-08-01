@@ -1,0 +1,24 @@
+{
+  "name": "nodejs-course",
+  "version": "1.0.0",
+  "description": "NodeJS Course",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm run test",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielasmeria/nodejs-course.git"
+  },
+  "author": "Gabriela Smeria",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gabrielasmeria/nodejs-course/issues"
+  },
+  "homepage": "https://github.com/gabrielasmeria/nodejs-course#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

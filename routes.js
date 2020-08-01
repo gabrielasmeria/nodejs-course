@@ -8,13 +8,13 @@ const requestHandler = (req, res) => {
   if (url === '/' && method === "GET") {
     res.write('<html>')
     res.write('<head><title>My app</title></head>')
-    res.write('<body><h1>HELLLOOOOOOOOOOO</h1></body>')
-    res.write('<form action="/" method="post"><input type="text" name="message"></input><button type="submit">Click me!</button></form>')
+    res.write('<body><h1>HELLLOOOOOOOOOO</h1></body>')
+    res.write('<form action="/create-message" method="post"><input type="text" name="message"></input><button type="submit">Click me!</button></form>')
     res.write('</html>')
     return res.end()
   }
 
-  if (url === '/' && method === "POST") {
+  if (url === '/create-message' && method === "POST") {
     const message = []
 
     req.on('data', chunk => {
@@ -25,7 +25,7 @@ const requestHandler = (req, res) => {
       const parsedData = Buffer.concat(message).toString()
       const myMessage = parsedData.split("=")[1]
 
-      console.log(`This is my inputed message ${trim(myMessage)}`)
+      console.log(`This is my message: ${trim(myMessage)}`)
       return res.end()
     })
   }
